@@ -16,8 +16,10 @@
 
         <property name="hibernate.hbm2ddl.auto">update</property>
 
+        <property name="log4j.logger.org.hibernate">warning</property>
+
         <!-- List of mapping classes -->
-        <mapping class="com.faku99.main.Test" />
+        <mapping class="com.faku99.main.Person" />
 
     </session-factory>
 </hibernate-configuration>
