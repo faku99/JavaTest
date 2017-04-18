@@ -3,32 +3,39 @@ package com.faku99.sql;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.hibernate.Transaction;
 import org.hibernate.cfg.Configuration;
+
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * Class that handles the connection to the SQLite database.
  */
-public class SQLiteConnection {
+public class DBManager {
 
-    private static SQLiteConnection sharedInstance = null;
+    private static DBManager sharedInstance = null;
+
+    private static Logger LOG = Logger.getLogger(DBManager.class.getName());
 
     private SessionFactory factory = null;
+
     private Session session = null;
 
-    public static SQLiteConnection sharedInstance() {
-        if(sharedInstance == null) {
-            sharedInstance = new SQLiteConnection();
+    public static DBManager sharedInstance() {
+        if (sharedInstance == null) {
+            sharedInstance = new DBManager();
         }
 
         return sharedInstance;
     }
 
     public void close() {
-        if(session != null) {
+        if (session != null) {
             session.close();
         }
 
-        if(factory != null) {
+        if (factory != null) {
             factory.close();
         }
     }
@@ -38,11 +45,7 @@ public class SQLiteConnection {
         close();
     }
 
-    public Session getSession() {
-        return session;
-    }
-
-    private SQLiteConnection() {
+    private DBManager() {
         this.connect();
     }
 
@@ -58,6 +61,22 @@ public class SQLiteConnection {
             System.out.println("Session opened.");
         } catch (HibernateException e) {
             e.printStackTrace();
+        }
+    }
+
+    public void save(Object object) {
+        Transaction transaction = null;
+
+        try {
+            transaction = session.beginTransaction();
+            session.save(object);
+            transaction.commit();
+        } catch (HibernateException e) {
+            if (transaction != null) {
+                transaction.rollback();
+            }
+
+            LOG.log(Level.SEVERE, null, e);
         }
     }
 

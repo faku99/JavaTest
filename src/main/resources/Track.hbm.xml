@@ -3,14 +3,20 @@
         "-//Hibernate/Hibernate Mapping DTD//EN"
         "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
 
-<hibernate-mapping>
-    <class name="Test" table="test">
+<hibernate-mapping default-access="field">
+    <class name="com.faku99.media.Track" table="track">
+
         <meta attribute="class-description">
-            This class is a test class.
+            Represents an audio track.
         </meta>
+
         <id name="id" type="int" column="id">
-            <generator class="native"/>
+            <generator class="increment"/>
         </id>
-        <property name="str" column="str" type="string"/>
+
+        <version name="version" column="version"/>
+
+        <property name="name" column="name" type="string" not-null="true"/>
+
     </class>
 </hibernate-mapping>

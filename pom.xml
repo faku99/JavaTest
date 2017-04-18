@@ -77,7 +77,7 @@
                     <archive>
                         <manifest>
                             <addClasspath>true</addClasspath>
-                            <mainClass>com.faku99.main.Main</mainClass>
+                            <mainClass>com.faku99.Main</mainClass>
                             <classpathPrefix>classes/lib/</classpathPrefix>
                         </manifest>
                     </archive>
