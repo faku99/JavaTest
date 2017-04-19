@@ -5,10 +5,14 @@ import com.faku99.media.PlaylistTrack;
 import com.faku99.media.Track;
 import com.faku99.sql.DBManager;
 import org.hibernate.Session;
+import org.hibernate.query.Query;
 
 import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Main {
+
     public static void dropDatabase() {
         String filePath = "database.db";
         File dbFile = new File(filePath);
@@ -46,6 +50,20 @@ public class Main {
         dbManager.save(playlistTrack13);
         dbManager.save(playlistTrack22);
         dbManager.save(playlistTrack23);
+
+        Session session = dbManager.getSession();
+
+        for (Playlist playlist : new Playlist[]{playlist1, playlist2}) {
+            Query query = session.createQuery(String.format("from PlaylistTrack where playlist_id = '%d'", playlist.getId()));
+            List list = query.list();
+
+            System.out.printf("Tracks for %s:\n", playlist.getName());
+            for (Object obj : list) {
+                if (PlaylistTrack.class.isInstance(obj)) {
+                    System.out.printf(" %s\n", ((PlaylistTrack) obj).getTrack());
+                }
+            }
+        }
 
         dbManager.close();
     }

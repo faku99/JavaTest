@@ -80,4 +80,8 @@ public class DBManager {
         }
     }
 
+    public Session getSession() {
+        return session;
+    }
+
 }

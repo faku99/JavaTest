@@ -18,4 +18,8 @@ public class Track {
     public String getName() {
         return name;
     }
+
+    public String toString() {
+        return String.format("#%d - %s", id, name);
+    }
 }
